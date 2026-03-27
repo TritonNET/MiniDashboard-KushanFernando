@@ -29,7 +29,7 @@ namespace MiniDashboard.Client
                 if (m_cacheLoaded)
                     return;
 
-                var products = await m_backend.GetProductsAsync(new ProductFilter(), ct);
+                var products = await m_backend.GetProductsAsync(new ProductFilter(), 0, 2, ct);
 
                 m_cache.Clear();
 
@@ -81,11 +81,11 @@ namespace MiniDashboard.Client
             return product;
         }
 
-        public async Task<List<Product>> GetProductsAsync(ProductFilter filter, CancellationToken cancellationToken)
+        public async Task<List<Product>> GetProductsAsync(ProductFilter filter, int page, int pagesize, CancellationToken cancellationToken)
         {
             await EnsureCacheLoaded(cancellationToken);
 
-            IEnumerable<Product> query = m_cache.Values;
+            IEnumerable<Product> query = await m_backend.GetProductsAsync(filter, page, pagesize, cancellationToken);
 
             if (filter.Name is not null && !string.IsNullOrWhiteSpace(filter.Name.Value))
             {

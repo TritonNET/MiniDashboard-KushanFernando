@@ -25,6 +25,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="5"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -279,22 +281,39 @@
 
         </ItemsControl>
 
+        <Grid
+            Grid.Row="4"
+            Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Content="Back"
+                Grid.Column="0"/>
+            <Button
+                Command="{Binding NextCommand}"
+                Content="Next"
+                Grid.Column="1"/>
+        </Grid>
+        
         <Button
             Content="Add Product"
-            Grid.Row="4"
+            Grid.Row="6"
             Grid.Column="1"
             HorizontalAlignment="Right"
             Padding="15,0"
             Command="{Binding Path=AddProductCommand}"
             />
 
-        <!--Busy Overlay-->
+        <!--Busy Overlay--><!--
         <Grid 
             Grid.Row="1"
             Grid.Column="1"
             Grid.RowSpan="4"
             Visibility="Hidden">
-            <!--Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"-->
+            --><!--Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"--><!--
             <Grid
                 Background="#77000000">                
             </Grid>
@@ -419,7 +438,7 @@
                     Command="{Binding Path=SaveNewProductCommand}"/>
             </Grid>
 
-        </Grid>
+        </Grid>-->
 
 
         <Grid 

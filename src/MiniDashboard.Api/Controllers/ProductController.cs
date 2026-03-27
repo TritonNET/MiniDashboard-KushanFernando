@@ -14,10 +14,10 @@ namespace MiniDashboard.Api.Controllers
         {
             m_productService = productService;
         }
-
-        [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetAll(CancellationToken ct)
-            => await HandleAsync(() => m_productService.GetProductsAsync(new ProductFilter(), ct));
+        // /product?page=12&pagesize=234
+        [HttpGet()]
+        public async Task<ActionResult<List<Product>>> GetAll([FromQuery]int page, [FromQuery]int pagesize, CancellationToken ct)
+            => await HandleAsync(() => m_productService.GetProductsAsync(new ProductFilter(), page, pagesize, ct));
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<Product>> Get(Guid id, CancellationToken ct)
@@ -38,7 +38,7 @@ namespace MiniDashboard.Api.Controllers
                 MaxPrice = maxPrice
             };
 
-            return await HandleAsync(() => m_productService.GetProductsAsync(filter, ct));
+            return await HandleAsync(() => m_productService.GetProductsAsync(filter, 0, 1000, ct));
         }
 
         [HttpPost]

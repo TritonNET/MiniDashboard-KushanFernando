@@ -58,9 +58,9 @@ namespace MiniDashboard.Client
                    ?? throw new InvalidOperationException("Server returned null product.");
         }
 
-        public async Task<List<Product>> GetProductsAsync(ProductFilter filter, CancellationToken cancellationToken)
+        public async Task<List<Product>> GetProductsAsync(ProductFilter filter, int page, int pagesize, CancellationToken cancellationToken)
         {
-            var url = BuildSearchUrl(filter);
+            var url = $"product?page={page}&pagesize={pagesize}";
 
             var response = await m_http.GetAsync(url, cancellationToken);
 
@@ -85,7 +85,7 @@ namespace MiniDashboard.Client
             return true;
         }
 
-        private static string BuildSearchUrl(ProductFilter filter)
+        private static string BuildSearchUrl(ProductFilter filter, int page, int pagesize)
         {
             var sb = new StringBuilder("product/search?");
 

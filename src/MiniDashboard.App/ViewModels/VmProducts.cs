@@ -25,6 +25,8 @@ namespace MiniDashboard.App.ViewModels
 
         public ICommand SaveNewProductCommand { get; }
 
+        public ICommand NextCommand { get; }
+
         public EmProductFilter Filter { get; }
 
         public EmProduct NewProduct { get; set; }
@@ -34,6 +36,8 @@ namespace MiniDashboard.App.ViewModels
             NewProduct = new EmProduct();
             Filter = new EmProductFilter();
             Products = new ObservableCollection<EmProduct>();
+            m_page = 0;
+            m_pageSize = 2;
             
             Products.Add(new EmProduct(new Product
             {
@@ -84,6 +88,7 @@ namespace MiniDashboard.App.ViewModels
 
             CancelNewProductCommand = new RelayCommand(OnCancelNewProduct);
             SaveNewProductCommand = new AsyncRelayCommand(OnSaveNewProductAsync);
+            NextCommand = new AsyncRelayCommand(OnLoadNextAsync);
         }
 
         public override Task InitializeAsync()
@@ -112,6 +117,20 @@ namespace MiniDashboard.App.ViewModels
         {
             get => m_addingProduct;
             set => SetProperty(ref m_addingProduct, value);
+        }
+
+        private int m_page;
+        public int Page
+        {
+            get => m_page;
+            set => SetProperty(ref m_page, value);
+        }
+
+        private int m_pageSize;
+        public int PageSize
+        {
+            get => m_pageSize;
+            set => SetProperty(ref m_pageSize, value);
         }
 
         private async Task OnDeleteProductAsync(EmProduct product)
@@ -144,7 +163,7 @@ namespace MiniDashboard.App.ViewModels
         {
             IsBusy = true;
 
-            var products = await m_productService.GetProductsAsync((ProductFilter)Filter, CancellationToken.None);
+            var products = await m_productService.GetProductsAsync((ProductFilter)Filter, m_page, m_pageSize, CancellationToken.None);
 
             Products.Clear();
 
@@ -188,6 +207,12 @@ namespace MiniDashboard.App.ViewModels
             {
                 throw;
             }
+        }
+
+        private Task OnLoadNextAsync()
+        {
+            m_page+=1;
+            return OnFilterProductAsync();
         }
     }
 }

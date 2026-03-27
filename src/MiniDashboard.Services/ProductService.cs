@@ -118,7 +118,7 @@ namespace MiniDashboard.Services
             }
         }
 
-        public async Task<List<Product>> GetProductsAsync(ProductFilter filter, CancellationToken cancellationToken)
+        public async Task<List<Product>> GetProductsAsync(ProductFilter filter, int page, int pagesize, CancellationToken cancellationToken)
         {
             m_logger.Verbose("Get products", filter);
 
@@ -126,7 +126,7 @@ namespace MiniDashboard.Services
             {
                 var tblProducts = await m_productStore.GetProductsAsync(filter, cancellationToken);
 
-                var products = tblProducts.Select(tbl => new Product
+                var products = tblProducts.Skip((page - 1) * pagesize).Take(pagesize).Select(tbl => new Product
                 {
                     ID = tbl.id,
                     Name = tbl.name,

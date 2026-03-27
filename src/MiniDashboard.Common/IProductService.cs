@@ -10,7 +10,7 @@ namespace MiniDashboard.Common
         
         Task<Product> GetProductAsync(Guid id, CancellationToken cancellationToken);
         
-        Task<List<Product>> GetProductsAsync(ProductFilter filter, CancellationToken cancellationToken);
+        Task<List<Product>> GetProductsAsync(ProductFilter filter, int page, int pagesize, CancellationToken cancellationToken);
         
         Task<bool> UpdateProductAsync(Product product, CancellationToken cancellationToken);
     }
